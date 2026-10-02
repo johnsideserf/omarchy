@@ -48,10 +48,11 @@ add_theme_preview() {
   # directory, and the two previews need not share an extension: an override
   # that only adds backgrounds/ resolves to a .jpg, while the stock theme ships
   # preview.png. Compare on the theme name alone so the user entry wins and the
-  # theme is listed once.
+  # theme is listed once. The glob also matches a longer name (nord.custom for
+  # nord), so only an entry whose name minus its extension is this theme counts.
   local existing
   for existing in "$preview_dir/$theme_name".*; do
-    [[ -e $existing ]] && return
+    [[ -e $existing && ${existing##*/} == "$theme_name.${existing##*.}" ]] && return
   done
 
   ln -s "$preview" "$preview_dir/$theme_name.$extension"
